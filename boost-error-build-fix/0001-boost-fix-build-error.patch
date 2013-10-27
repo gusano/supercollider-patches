@@ -1,0 +1,30 @@
+From 2208c6a8754f2d50d6e1764ea969aca5f0d3b30d Mon Sep 17 00:00:00 2001
+From: Yvan Volochine <yvan.volochine@gmail.com>
+Date: Sun, 27 Oct 2013 14:22:44 +0100
+Subject: [PATCH] boost: fix build error
+
+Signed-off-by: Yvan Volochine <yvan.volochine@gmail.com>
+---
+ external_libraries/boost/boost/cstdint.hpp | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/external_libraries/boost/boost/cstdint.hpp b/external_libraries/boost/boost/cstdint.hpp
+index ea84b65..50064d8 100644
+--- a/external_libraries/boost/boost/cstdint.hpp
++++ b/external_libraries/boost/boost/cstdint.hpp
+@@ -41,8 +41,10 @@
+ // so we disable use of stdint.h when GLIBC does not define __GLIBC_HAVE_LONG_LONG.
+ // See https://svn.boost.org/trac/boost/ticket/3548 and http://sources.redhat.com/bugzilla/show_bug.cgi?id=10990
+ //
+-#if defined(BOOST_HAS_STDINT_H) && (!defined(__GLIBC__) || defined(__GLIBC_HAVE_LONG_LONG))
+-
++#if defined(BOOST_HAS_STDINT_H)                                 \
++    && (!defined(__GLIBC__)                                       \
++        || defined(__GLIBC_HAVE_LONG_LONG)                        \
++        || (defined(__GLIBC__) && ((__GLIBC__ > 2) || ((__GLIBC__ == 2) && (__GLIBC_MINOR__ >= 17)))))
+ // The following #include is an implementation artifact; not part of interface.
+ # ifdef __hpux
+ // HP-UX has a vaguely nice <stdint.h> in a non-standard location
+-- 
+1.8.4.1
+
